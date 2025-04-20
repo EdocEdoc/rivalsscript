@@ -59,6 +59,33 @@ UserInputService.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton2 then Holding = false end
 end)
 
+-- Function to simulate keypress (Macro: Right Ctrl -> wait 0.1 secs -> Space)
+local function executeMacro()
+    -- Simulate Right Ctrl press
+    VirtualInputManager.InputBegan(
+        Instance.new("InputObject", game),
+        false -- setting to false, because it's just simulating not a real key press
+    )
+    
+    -- Wait for 0.1 seconds
+    wait(0.1)
+    
+    -- Simulate Space key press
+    VirtualInputManager.InputBegan(
+        Instance.new("InputObject", game),
+        false -- setting to false, because it's just simulating not a real key press
+    )
+end
+
+-- Intercept Spacebar Key press and execute macro
+UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+    -- If Space key is pressed, intercept it
+    if input.KeyCode == Enum.KeyCode.Space and not gameProcessedEvent then
+        -- Execute the macro function
+        executeMacro()
+    end
+end)
+
 -- Keybind: Toggle Aimbot (Right Ctrl)
 UserInputService.InputBegan:Connect(function(input)
 	if input.KeyCode == Enum.KeyCode.RightControl then
